@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, Text, TextInput, TouchableOpacity, View } from 'react-native';
@@ -33,7 +34,7 @@ function JobSeekerSignup() {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch('http://192.168.0.107:8000/signup.php', {
+      const response = await fetch('http://192.168.0.104:8000/signup.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +48,20 @@ function JobSeekerSignup() {
 
         Alert.alert('Success', result.message);
         // Navigate to login or home screen
-        router.push('/seeker');
+         
+       
+        if(result.user.role === "job_seeker"){
+        await AsyncStorage.setItem('user', JSON.stringify(result.user));
+        await AsyncStorage.setItem('userRole', result.user.role);
+        await AsyncStorage.setItem('userEmail', result.user.email);
+        // Convert userId to string before storing
+        await AsyncStorage.setItem('userId', String(result.user.id));
+
+        console.log(result.user);
+        
+           router.push('/seeker');
+        }
+      
       } else {
         Alert.alert('Error', result.message);
       }
