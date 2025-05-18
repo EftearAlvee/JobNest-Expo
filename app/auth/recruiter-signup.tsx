@@ -1,8 +1,10 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { EyeIcon, EyeSlashIcon } from 'react-native-heroicons/outline';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 function RecruiterSignup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -31,31 +33,40 @@ function RecruiterSignup() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const handleSignup = async () => {
-    try {
-      const response = await fetch('http://192.168.0.107:8000/signup.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      
-      const result = await response.json();
-      
-      if (result.status === 'success') {
+const handleSignup = async () => {
+  try {
+    const response = await fetch('http://192.168.0.104:8000/signup.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+    
+    const result = await response.json();
+    
+    if (result.status === 'success') {
+      Alert.alert('Success', result.message);
 
-        Alert.alert('Success', result.message);
-        // Navigate to login or home screen
-        router.push('/seeker');
-      } else {
-        Alert.alert('Error', result.message);
+      if (result.user.role === "recruiter") {
+        await AsyncStorage.setItem('user', JSON.stringify(result.user));
+        await AsyncStorage.setItem('userRole', result.user.role);
+        await AsyncStorage.setItem('userEmail', result.user.email);
+        // Convert userId to string before storing
+        await AsyncStorage.setItem('userId', String(result.user.id));
+
+        console.log(result.user);
+        
+        router.push('/recruiter');
       }
-    } catch (error) {
-      Alert.alert('Error', 'Network request failed');
-      console.error(error);
+    } else {
+      Alert.alert('Error', result.message);
     }
-  };
+  } catch (error) {
+    Alert.alert('Error', 'Network request failed');
+    console.error(error);
+  }
+};
 
   return (
     <SafeAreaView className="flex-1 bg-[#f8fafc] justify-center">
