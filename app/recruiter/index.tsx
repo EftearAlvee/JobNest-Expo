@@ -1,4 +1,5 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+<<<<<<< HEAD
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
@@ -109,6 +110,55 @@ useEffect(() => {
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
       <ScrollView className="px-5 pt-6" showsVerticalScrollIndicator={false}>
+=======
+import { router } from 'expo-router';
+import React from 'react';
+import { Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+
+const RecruiterDashboardScreen = () => {
+  const currentTime = new Date();
+  const hours = currentTime.getHours();
+  let greeting = 'Good Morning';
+
+  if (hours >= 12 && hours < 17) {
+    greeting = 'Good Afternoon';
+  } else if (hours >= 17 || hours < 5) {
+    greeting = 'Good Evening';
+  }
+
+  const recentApplications = [
+    {
+      id: 1,
+      name: 'Alice Johnson',
+      role: 'Frontend Developer',
+      status: 'Pending',
+    },
+    {
+      id: 2,
+      name: 'David Smith',
+      role: 'UI/UX Designer',
+      status: 'Shortlisted',
+    },
+    {
+      id: 3,
+      name: 'Maria Gonzales',
+      role: 'Backend Developer',
+      status: 'Interview Scheduled',
+    },
+  ];
+
+  const jobStats = {
+    totalPosts: 12,
+    totalApplications: 87,
+    shortlisted: 21,
+    interviews: 14,
+  };
+
+  return (
+    <SafeAreaView className="flex-1 bg-gray-50">
+      <ScrollView className="px-5 pt-6" showsVerticalScrollIndicator={false}>
+
+>>>>>>> f3377bfcbb35e5815e35ba268851b7668fa5556d
         {/* Header */}
         <View className="flex-row justify-between items-center mb-6">
           <View>
@@ -126,7 +176,11 @@ useEffect(() => {
         {/* Post a Job Button */}
         <TouchableOpacity 
           className="bg-blue-600 rounded-xl py-3 mb-6"
+<<<<<<< HEAD
           onPress={() => router.push('/recruiter/post-job')}
+=======
+          onPress={() => router.push('/recruiter/profile')}
+>>>>>>> f3377bfcbb35e5815e35ba268851b7668fa5556d
         >
           <Text className="text-center text-white font-bold text-lg">+ Post a New Job</Text>
         </TouchableOpacity>
@@ -151,6 +205,7 @@ useEffect(() => {
           </View>
         </View>
 
+<<<<<<< HEAD
         {/* Active Job Listings */}
         <View className="mb-6">
           <View className="flex-row justify-between items-center mb-4">
@@ -199,10 +254,13 @@ useEffect(() => {
           </View>
         </View>
 
+=======
+>>>>>>> f3377bfcbb35e5815e35ba268851b7668fa5556d
         {/* Recent Applications */}
         <View className="mb-24">
           <View className="flex-row justify-between items-center mb-4">
             <Text className="text-xl font-bold text-gray-800">Recent Applications</Text>
+<<<<<<< HEAD
             <TouchableOpacity onPress={() => router.push('/recruiter/application')}>
               <Text className="text-blue-500 font-medium">View all</Text>
             </TouchableOpacity>
@@ -210,6 +268,15 @@ useEffect(() => {
           <View className="space-y-4 ">
             {recentApplications.map((applicant) => (
               <View key={applicant.id} className="bg-white p-5 rounded-xl shadow-sm shadow-gray-300 border border-gray-100">
+=======
+            <TouchableOpacity>
+              <Text className="text-blue-500 font-medium">View all</Text>
+            </TouchableOpacity>
+          </View>
+          <View className="space-y-4">
+            {recentApplications.map((applicant) => (
+              <View key={applicant.id} className="bg-white p-5 rounded-xl shadow-sm shadow-gray-300 border border-gray-100 mb-5 ">
+>>>>>>> f3377bfcbb35e5815e35ba268851b7668fa5556d
                 <View className="flex-row justify-between mb-2">
                   <Text className="text-lg font-bold text-gray-800">{applicant.name}</Text>
                   <MaterialIcons name="more-vert" size={20} color="#9CA3AF" />
