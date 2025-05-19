@@ -1,22 +1,86 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { Image, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
-
+import { Alert, Image, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function JobSeekerLogin() {
+  const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-    const [showPassword, setShowPassword] = useState(false);
-    const [password, setPassword] = useState('');
-  
-    const togglePasswordVisibility = () => {
-      setShowPassword(!showPassword);
-    };  
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };  
 
-    const handleLogin = () => {
-      console.log(password);
-      router.push('/seeker');
-    };
+const handleLogin = async () => {
+  if (!email || !password) {
+    Alert.alert('Error', 'Please enter both email and password');
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const response = await fetch('http://192.168.0.103:8000/signin.php?role=job_seeker', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email.trim(),
+        password: password
+      })
+    });
+
+    // Check response content type
+    const contentType = response.headers.get('content-type');
+    if (!contentType?.includes('application/json')) {
+      const text = await response.text();
+      throw new Error(`Server returned ${response.status}: ${text.substring(0, 100)}`);
+    }
+
+    const result = await response.json();
+      
+      if (result.status === 'success') {
+
+        Alert.alert('Success', result.message);
+        // Navigate to login or home screen
+         
+       
+        if(result.user.role === "job_seeker"){
+        await AsyncStorage.setItem('user', JSON.stringify(result.user));
+        await AsyncStorage.setItem('userRole', result.user.role);
+        await AsyncStorage.setItem('userEmail', result.user.email);
+        // Convert userId to string before storing
+        await AsyncStorage.setItem('userId', String(result.user.id));
+
+        console.log(result.user);
+
+           router.push('/seeker');
+        }
+      
+      } else {
+        Alert.alert('Error', result.message);
+      }
+  } catch (error) {
+    console.error('Login error:', error);
+    
+    // Type-safe error handling
+    let errorMessage = 'An unexpected error occurred. Please try again.';
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    } else if (typeof error === 'string') {
+      errorMessage = error;
+    }
+
+    Alert.alert('Login Error', errorMessage);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <SafeAreaView className="flex-1 bg-[#f8fafc]">
@@ -41,40 +105,51 @@ export default function JobSeekerLogin() {
               placeholder="Enter your email"
               keyboardType="email-address"
               placeholderTextColor="#9ca3af"
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
             />
           </View>
 
           {/* Password Input */}
           <View>
-        <Text className="text-gray-700 mb-2">Password</Text>
-        <View className="relative">
-          <TextInput
-            className="w-full h-14 px-5 bg-white rounded-xl border border-gray-200 text-gray-700 pr-12" // Added pr-12 for icon spacing
-            placeholder="Enter your password"
-            secureTextEntry={!showPassword}
-            placeholderTextColor="#9ca3af"
-            value={password}
-            onChangeText={setPassword}
-          />
-          <TouchableOpacity 
-            onPress={togglePasswordVisibility}
-            className="absolute right-4 top-4"
-          >
-            {showPassword ? (
-              <MaterialCommunityIcons name="eye-off-outline"  size={24} color="#40189D" />
-            ) : (
-              <MaterialCommunityIcons name="eye-outline"  size={24} color="#40189D" />
-            )}
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity className="self-end mt-2 mb-2">
-          <Text className="text-[#3b82f6] text-sm">Forgot Password?</Text>
-        </TouchableOpacity>
-      </View>
+            <Text className="text-gray-700 mb-2">Password</Text>
+            <View className="relative">
+              <TextInput
+                className="w-full h-14 px-5 bg-white rounded-xl border border-gray-200 text-gray-700 pr-12"
+                placeholder="Enter your password"
+                secureTextEntry={!showPassword}
+                placeholderTextColor="#9ca3af"
+                value={password}
+                onChangeText={setPassword}
+              />
+              <TouchableOpacity 
+                onPress={togglePasswordVisibility}
+                className="absolute right-4 top-4"
+              >
+                {showPassword ? (
+                  <MaterialCommunityIcons name="eye-off-outline" size={24} color="#40189D" />
+                ) : (
+                  <MaterialCommunityIcons name="eye-outline" size={24} color="#40189D" />
+                )}
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity className="self-end mt-2 mb-2">
+              <Text className="text-[#3b82f6] text-sm">Forgot Password?</Text>
+            </TouchableOpacity>
+          </View>
 
           {/* Login Button */}
-          <TouchableOpacity className="w-full h-14 bg-primary rounded-xl items-center justify-center shadow-lg shadow-blue-200" onPress={handleLogin}>
-            <Text className="text-white font-bold text-lg">Login</Text>
+          <TouchableOpacity 
+            className={`w-full h-14 rounded-xl items-center justify-center shadow-lg ${isLoading ? 'bg-gray-400' : 'bg-primary shadow-blue-200'}`} 
+            onPress={handleLogin}
+            disabled={isLoading}
+          >
+            {isLoading ? (
+              <Text className="text-white font-bold text-lg">Log In...</Text>
+            ) : (
+              <Text className="text-white font-bold text-lg">Login</Text>
+            )}
           </TouchableOpacity>
 
           {/* Divider */}

@@ -34,7 +34,7 @@ function JobSeekerSignup() {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch('http://192.168.0.104:8000/signup.php', {
+      const response = await fetch('http://192.168.0.103:8000/signup.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ function JobSeekerSignup() {
         await AsyncStorage.setItem('userId', String(result.user.id));
 
         console.log(result.user);
-        
+
            router.push('/seeker');
         }
       

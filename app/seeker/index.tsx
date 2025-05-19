@@ -1,9 +1,23 @@
 import { FontAwesome, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
-import React from 'react';
-import { Image, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Alert, Image, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 const DashboardScreen = () => {
+
+  const [loading, setLoading] = useState(true);
+  type Job = {
+    id: number;
+    title: string;
+    company: string;
+    salary: string;
+    location: string;
+    // add other fields if needed
+  };
+  const [jobs, setJobs] = useState<Job[]>([]);
+
+
   const currentTime = new Date();
   const hours = currentTime.getHours();
   let greeting = 'Good Morning';
@@ -61,6 +75,34 @@ const DashboardScreen = () => {
       location: 'Medan, Indonesia'
     }
   ];
+
+  useEffect(() => {
+   const fetchJobs = async () => {
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      const response = await fetch("http://192.168.0.103:8000/get-all-job.php?role=recruiter", {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+  
+      const data = await response.json();
+      if (response.ok) {
+        setJobs(data.jobs);
+        console.log(data);
+
+      } else {
+        Alert.alert('Error', data.error || 'Failed to fetch jobs');
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Something went wrong');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+    fetchJobs();
+  }, []);
 
   const categories = ['All', 'Design', 'Development', 'Marketing', 'Business', 'Finance', 'Remote'];
 
@@ -152,9 +194,9 @@ const DashboardScreen = () => {
               <Text className="text-blue-500 font-medium">View all</Text>
             </TouchableOpacity>
           </View>
-
+          {/* design resnt jobs  */}
           <View className="space-y-4">
-            {recentJobs.map((job) => (
+            {jobs.map((job) => (
               <View key={job.id} className="bg-white p-5 rounded-xl shadow-sm shadow-gray-300 border border-gray-100 mb-5">
                 <View className="flex-row justify-between items-start mb-3">
                   <Text className="font-bold text-gray-800">{job.company}</Text>
