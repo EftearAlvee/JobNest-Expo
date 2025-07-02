@@ -46,8 +46,8 @@ const skillSuggestions = [
   'CSS',
   'Express.js',
 ];
-// 192.168.0.104
-const BASE_URL = 'http://192.168.0.103:8000'; // Replace with your API base URL
+
+const BASE_URL = 'http://192.168.0.101:8000'; 
 
 
 const ProfileScreen = () => {

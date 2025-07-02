@@ -23,7 +23,7 @@ const handleLogin = async () => {
   setIsLoading(true);
 
   try {
-    const response = await fetch('http://192.168.0.103:8000/signin.php?role=recruiter', {
+    const response = await fetch('http://192.168.0.101:8000/signin.php?role=recruiter', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ const handleLogin = async () => {
         {/* Footer */}
         <View className="flex-row justify-center mt-8">
           <Text className="text-gray-500">Don&apos;t have an account? </Text>
-          <TouchableOpacity onPress={() => router.push('/auth/job-seeker-signup')}>
+          <TouchableOpacity onPress={() => router.push('/auth/recruiter-signup')}>
             <Text className="text-[#3b82f6] font-medium">Sign Up</Text>
           </TouchableOpacity>
         </View>

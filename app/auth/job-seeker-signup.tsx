@@ -34,7 +34,7 @@ function JobSeekerSignup() {
 
   const handleSignup = async () => {
     try {
-      const response = await fetch('http://192.168.0.103:8000/signup.php', {
+      const response = await fetch('http://192.168.0.101:8000/signup.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,22 +78,22 @@ function JobSeekerSignup() {
         <View className="mb-8 items-center">
           {/* Logo */}
           <Image 
-            source={require('../../assets/images/google.png')} // Update this path to your logo
+            source={require('../../assets/images/add-friend_16897660.png')} // Update this path to your logo
             className="w-24 h-24 mb-4" // Adjust size as needed
             resizeMode="contain"
           />
-          <Text className="text-3xl font-bold text-[#3b82f6]">Create Account</Text>
+          <Text className="text-3xl font-bold text-[#40189D]">Create Account</Text>
           <Text className="text-gray-500 mt-2">Fill in your details to get started</Text>
         </View>
 
         {/* Form */}
         <View className="space-y-5">
           {/* Name Row */}
-          <View className="flex-row space-x-4">
+          <View className="flex-row space-x-4 gap-4">
             <View className="flex-1">
               <Text className="text-gray-700 mb-2">First Name</Text>
               <TextInput
-                className="w-full h-14 px-4 bg-white rounded-xl border border-gray-200 text-gray-700"
+                className="w-full h-14 px-4 bg-white rounded-xl border border-primary text-gray-700"
                 placeholder="John"
                 value={formData.firstName}
                 onChangeText={(text) => handleChange('firstName', text)}
@@ -103,7 +103,7 @@ function JobSeekerSignup() {
             <View className="flex-1">
               <Text className="text-gray-700 mb-2">Last Name</Text>
               <TextInput
-                className="w-full h-14 px-4 bg-white rounded-xl border border-gray-200 text-gray-700"
+                className="w-full h-14 px-4 bg-white rounded-xl border border-primary  text-gray-700"
                 placeholder="Doe"
                 value={formData.lastName}
                 onChangeText={(text) => handleChange('lastName', text)}
@@ -116,7 +116,7 @@ function JobSeekerSignup() {
           <View>
             <Text className="text-gray-700 mb-2">Email</Text>
             <TextInput
-              className="w-full h-14 px-4 bg-white rounded-xl border border-gray-200 text-gray-700"
+              className="w-full h-14 px-4 bg-white rounded-xl border border-primary text-gray-700"
               placeholder="john.doe@example.com"
               keyboardType="email-address"
               value={formData.email}
@@ -129,7 +129,7 @@ function JobSeekerSignup() {
           <View>
             <Text className="text-gray-700 mb-2">Phone Number</Text>
             <TextInput
-              className="w-full h-14 px-4 bg-white rounded-xl border border-gray-200 text-gray-700"
+              className="w-full h-14 px-4 bg-white rounded-xl border border-primary text-gray-700"
               placeholder="+1 (123) 456-7890"
               keyboardType="phone-pad"
               value={formData.phone}
@@ -143,7 +143,7 @@ function JobSeekerSignup() {
             <Text className="text-gray-700 mb-2">Password</Text>
             <View className="relative">
               <TextInput
-                className="w-full h-14 px-4 bg-white rounded-xl border border-gray-200 text-gray-700 pr-12"
+                className="w-full h-14 px-4 bg-white rounded-xl border border-primary  text-gray-700 pr-12"
                 placeholder="Create password"
                 secureTextEntry={!showPassword}
                 value={formData.password}
@@ -168,7 +168,7 @@ function JobSeekerSignup() {
             <Text className="text-gray-700 mb-2">Confirm Password</Text>
             <View className="relative">
               <TextInput
-                className="w-full h-14 px-4 bg-white rounded-xl border border-gray-200 text-gray-700 pr-12"
+                className="w-full h-14 px-4 bg-white rounded-xl border border-primary  text-gray-700 pr-12"
                 placeholder="Confirm your password"
                 secureTextEntry={!showConfirmPassword}
                 value={formData.confirmPassword}
@@ -190,7 +190,7 @@ function JobSeekerSignup() {
 
           {/* Sign Up Button */}
           <TouchableOpacity 
-            className="w-full h-14 bg-[#3b82f6] rounded-xl items-center justify-center mt-6 shadow-lg shadow-blue-200"
+            className="w-full h-14 bg-primary  rounded-xl items-center justify-center mt-6 shadow-lg shadow-blue-200"
             onPress={handleSignup}
           >
             <Text className="text-white font-bold text-lg">Sign Up</Text>
@@ -200,7 +200,7 @@ function JobSeekerSignup() {
           <View className="flex-row justify-center mt-6">
             <Text className="text-gray-500">Already have an account? </Text>
             <TouchableOpacity onPress={() => router.push('/auth/job-seeker-login')}>
-              <Text className="text-[#3b82f6] font-medium">Login</Text>
+              <Text className="text-primary font-medium">Login</Text>
             </TouchableOpacity>
           </View>
         </View>

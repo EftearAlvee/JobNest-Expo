@@ -38,7 +38,7 @@ const handleSubmit = async () => {
   try {
     const userId = await AsyncStorage.getItem('userId');
     setJobData({...jobData, user_id: userId ? parseInt(userId) : 0})
-    const response = await fetch('http://192.168.0.103:8000/post-job.php?role=recruiter', {
+    const response = await fetch('http://192.168.0.101:8000/post-job.php?role=recruiter', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -51,11 +51,17 @@ const handleSubmit = async () => {
 
     const result = await response.json();
 
-    if (response.ok) {
-      Alert.alert('Success', 'Job posted successfully!', [
-        { text: 'OK', onPress: () => router.back() },
-      ]);
-    } else {
+   if (response.ok) {
+  Alert.alert('Success', 'Job posted successfully!', [
+    {
+      text: 'OK',
+      onPress: () => {
+        router.push({ pathname: '/recruiter', params: { refresh: 'true' } });
+      },
+    },
+  ]);
+}
+ else {
       Alert.alert('Error', result.error || 'Failed to post job');
     }
   } catch (error) {

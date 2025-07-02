@@ -1,6 +1,6 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
@@ -31,7 +31,7 @@ const RecruiterDashboardScreen = () => {
     shortlisted: 0,
     interviews: 0,
   });
-
+  const { refresh } = useLocalSearchParams();
   const greeting = (() => {
     const hours = new Date().getHours();
     if (hours >= 12 && hours < 17) return 'Good Afternoon';
@@ -45,38 +45,47 @@ const RecruiterDashboardScreen = () => {
     { id: 3, name: 'Maria Gonzales', role: 'Backend Developer', status: 'Interview Scheduled' },
   ];
 
-  useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const userId = await AsyncStorage.getItem('userId');
-        const response = await fetch("http://192.168.0.103:8000/get-job.php?role=recruiter", {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ user_id: userId }),
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          setActiveJobs(data.jobs || []);
-          setJobStats({
-            totalPosts: data.totalPosts || 0,
-            totalApplications: data.totalApplications || 0,
-            shortlisted: data.shortlisted || 0,
-            interviews: data.interviews || 0,
-          });
-        } else {
-          Alert.alert('Error', data.error || 'Failed to fetch jobs');
-        }
-      } catch (error) {
-        console.error(error);
-        Alert.alert('Error', 'Something went wrong');
-      } finally {
+ useEffect(() => {
+  const fetchJobs = async () => {
+    setLoading(true); // <--- Add this to trigger UI update
+    try {
+      const userId = await AsyncStorage.getItem('userId');
+      if (!userId) {
+        Alert.alert('Error', 'User ID not found');
         setLoading(false);
+        return;
       }
-    };
 
-    fetchJobs();
-  }, []);
+      const response = await fetch("http://192.168.0.101:8000/get-job.php?role=recruiter", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_id: userId }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setActiveJobs(data.jobs || []);
+        setJobStats({
+          totalPosts: data.totalPosts || 0,
+          totalApplications: data.totalApplications || 0,
+          shortlisted: data.shortlisted || 0,
+          interviews: data.interviews || 0,
+        });
+      } else {
+        Alert.alert('Error', data.error || 'Failed to fetch jobs');
+      }
+    } catch (error) {
+      console.error('Fetch jobs error:', error.message || error);
+      Alert.alert('Error', 'Something went wrong while fetching jobs');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchJobs();
+}, []);
+
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);

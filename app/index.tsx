@@ -10,8 +10,8 @@ export default function index() {
         <View className="w-44 h-44 rounded-full bg-[#4116B1] items-center justify-center mb-5">
           <Text className="text-white text-[120px] font-bold italic ml-5 mt-2">J</Text>
         </View>
-        <Text className="text-[48px] font-bold italic text-[#333] mb-1">Jobie</Text>
-        <Text className="text-[20px] text-[#222] opacity-70 mb-2">Job Portal iOS App</Text>
+        <Text className="text-[48px] font-bold italic text-[#333] mb-1">JobNest</Text>
+        <Text className="text-[20px] text-[#222] opacity-70 mb-2">A online job portal</Text>
       </View>
 
       <View className="w-full items-start mt-8">
@@ -39,7 +39,7 @@ export default function index() {
         onPress={() => router.push('/auth/recruiter-login')}>
           <Text className="text-[64px] mr-4">👨‍💼</Text>
           <View className="flex-1">
-            <Text className="text-[22px] font-bold text-[#4116B1] mb-1 tracking-wider">COMPANY</Text>
+            <Text className="text-[22px] font-bold text-[#4116B1] mb-1 tracking-wider">Recruiter</Text>
             <Text className="text-[17px] text-[#222]">Let&apos;s recruit your great candidate faster here</Text>
           </View>
         </TouchableOpacity>

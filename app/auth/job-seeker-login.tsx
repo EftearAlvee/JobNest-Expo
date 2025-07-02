@@ -23,7 +23,7 @@ const handleLogin = async () => {
   setIsLoading(true);
 
   try {
-    const response = await fetch('http://192.168.0.103:8000/signin.php?role=job_seeker', {
+    const response = await fetch('http://192.168.0.101:8000/signin.php?role=job_seeker', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -88,10 +88,10 @@ const handleLogin = async () => {
         {/* Header */}
         <View className="items-center mb-12">
           <Image 
-            source={require('../../assets/images/icon.png')}
+            source={require('../../assets/images/profile_18678230.png')}
             className="w-32 h-32 mb-4"
           />
-          <Text className="text-3xl font-bold text-[#3b82f6]">Welcome Back</Text>
+          <Text className="text-3xl font-bold text-primary">Welcome Back</Text>
           <Text className="text-gray-500 mt-2">Sign in to continue your job search</Text>
         </View>
 
@@ -101,7 +101,7 @@ const handleLogin = async () => {
           <View>
             <Text className="text-gray-700 mb-2">Email</Text>
             <TextInput
-              className="w-full h-14 px-5 bg-white rounded-xl border border-gray-200 text-gray-700"
+              className="w-full h-14 px-5 bg-white rounded-xl border border-primary text-gray-700"
               placeholder="Enter your email"
               keyboardType="email-address"
               placeholderTextColor="#9ca3af"
@@ -116,7 +116,7 @@ const handleLogin = async () => {
             <Text className="text-gray-700 mb-2">Password</Text>
             <View className="relative">
               <TextInput
-                className="w-full h-14 px-5 bg-white rounded-xl border border-gray-200 text-gray-700 pr-12"
+                className="w-full h-14 px-5 bg-white rounded-xl border border-primarytext-gray-700 pr-12"
                 placeholder="Enter your password"
                 secureTextEntry={!showPassword}
                 placeholderTextColor="#9ca3af"
@@ -135,7 +135,7 @@ const handleLogin = async () => {
               </TouchableOpacity>
             </View>
             <TouchableOpacity className="self-end mt-2 mb-2">
-              <Text className="text-[#3b82f6] text-sm">Forgot Password?</Text>
+              <Text className="text-primary text-sm">Forgot Password?</Text>
             </TouchableOpacity>
           </View>
 
@@ -161,13 +161,13 @@ const handleLogin = async () => {
 
           {/* Social Login */}
           <View className="flex-row justify-center gap-10 space-x-4">
-            <TouchableOpacity className="w-24 h-14 bg-white rounded-xl items-center justify-center shadow-sm border border-gray-100">
+            <TouchableOpacity className="w-24 h-14 bg-white rounded-xl items-center justify-center shadow-sm border border-primary">
               <Image 
                 source={require('../../assets/images/google.png')}
                 className="w-6 h-6"
               />
             </TouchableOpacity>
-            <TouchableOpacity className="w-24 h-14 bg-white rounded-xl items-center justify-center shadow-sm border border-gray-100">
+            <TouchableOpacity className="w-24 h-14 bg-white rounded-xl items-center justify-center shadow-sm border primary">
               <Image 
                 source={require('../../assets/images/facebook.png')}
                 className="w-6 h-6"
@@ -180,7 +180,7 @@ const handleLogin = async () => {
         <View className="flex-row justify-center mt-8">
           <Text className="text-gray-500">Don&apos;t have an account? </Text>
           <TouchableOpacity onPress={() => router.push('/auth/job-seeker-signup')}>
-            <Text className="text-[#3b82f6] font-medium">Sign Up</Text>
+            <Text className="text-primary font-medium">Sign Up</Text>
           </TouchableOpacity>
         </View>
       </View>
